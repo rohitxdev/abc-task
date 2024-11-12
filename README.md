@@ -24,19 +24,31 @@ git clone https://github.com/rohitxdev/abc-task.git
 cd abc-task
 ```
 
-3. Build the project:
+### Running the Project
+
+1. Build the project:
 
 ```bash
 ./run build
 ```
 
-4. Run the project:
+2. Start the project:
 
 ```bash
 ./run start
 ```
 
 ## Usage
+
+### Environment Variables
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| ENV | Environment name | development, production |
+| PORT | Port number | 8080 |
+| HOST | Host name | localhost |
+| SHUTDOWN_TIMEOUT | Server Shutdown timeout | 5s |
+| DATABASE_URL | Database URL as file path | /path/to/database.db |
 
 ### Commands
 
@@ -61,3 +73,4 @@ cd abc-task
 - 'run' is a task runner script that provides various commands for running the project. It is located in the root directory of the project. Use only 'run' to run the project or you may encounter unexpected behavior.
 - Some commands in run may not work in this project because I copied parts of the code from my other projects.
 - All the environment variables must be set in the '.env' file in the root directory of the project.
+- Swagger UI is available at http://${HOST}:${PORT}/swagger/index.html after building and starting the project.
