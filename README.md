@@ -48,7 +48,7 @@ cd abc-task
 | PORT | Port number | 8080 |
 | HOST | Host name | localhost |
 | SHUTDOWN_TIMEOUT | Server Shutdown timeout | 5s |
-| DATABASE_URL | Database URL as file path | /path/to/database.db |
+| DATABASE_URL | Database URL as file name | app.db |
 
 ### Commands
 
