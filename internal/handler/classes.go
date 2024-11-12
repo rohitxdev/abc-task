@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
-	"github.com/rohitxdev/abc-task/internal/repo"
 )
 
 type CreateClassRequest struct {
@@ -37,6 +36,7 @@ func CreateClass(svc *Services) echo.HandlerFunc {
 		if err := bindAndValidate(c, req); err != nil {
 			return err
 		}
+
 		startDate, err := time.Parse("2006-01-02", req.StartDate)
 		if err != nil {
 			return c.JSON(http.StatusUnprocessableEntity, response{Message: "Invalid date format for start date"})
@@ -45,6 +45,7 @@ func CreateClass(svc *Services) echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusUnprocessableEntity, response{Message: "Invalid date format for end date"})
 		}
+
 		t := time.Now()
 		if t.After(startDate) {
 			return c.JSON(http.StatusUnprocessableEntity, response{Message: "Start date cannot be in the past"})
@@ -56,12 +57,12 @@ func CreateClass(svc *Services) echo.HandlerFunc {
 			return c.JSON(http.StatusUnprocessableEntity, response{Message: "End date cannot be before start date"})
 		}
 		if err := svc.Repo.CreateClass(req.Name, startDate.Unix(), endDate.Unix(), req.Capacity); err != nil {
-			if _, ok := err.(repo.RepoError); ok {
-				return c.JSON(http.StatusBadRequest, response{Message: err.Error()})
+			switch err {
+			default:
+				// Usually I add a lot more details to the log for internal server errors, but for this task, I'm just logging the error and returning a generic error message
+				slog.Error(err.Error())
+				return echo.ErrInternalServerError
 			}
-			// Usually I add a lot more details to the log for internal server errors, but for this task, I'm just logging the error and returning a generic error message
-			slog.Error(err.Error())
-			return echo.ErrInternalServerError
 		}
 
 		return c.JSON(http.StatusCreated, response{Message: "Class created successfully"})

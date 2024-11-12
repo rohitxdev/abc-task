@@ -153,7 +153,7 @@ func TestAPI(t *testing.T) {
 						Date:       time.Now().Add(time.Hour * 24 * 100).Format("2006-01-02"),
 					},
 				},
-				want: http.StatusBadRequest,
+				want: http.StatusUnprocessableEntity,
 			},
 			{name: "Date is in the past", args: args{
 				body: handler.CreateBookingRequest{
@@ -169,7 +169,7 @@ func TestAPI(t *testing.T) {
 					MemberName: "Rohit",
 					Date:       time.Now().Add(time.Hour * 24).Format("2006-01-02"),
 				}},
-				want: http.StatusBadRequest,
+				want: http.StatusNotFound,
 			},
 			{name: "Valid request", args: args{
 				body: handler.CreateBookingRequest{
@@ -201,7 +201,7 @@ func TestAPI(t *testing.T) {
 					MemberName: "Rohit",
 					Date:       time.Now().Add(time.Hour * 24).Format("2006-01-02"),
 				}},
-				want: http.StatusBadRequest,
+				want: http.StatusConflict,
 			},
 		}
 		for _, tt := range tests {

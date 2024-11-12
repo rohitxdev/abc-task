@@ -41,11 +41,17 @@ func CreateBooking(svc *Services) echo.HandlerFunc {
 			return c.JSON(http.StatusUnprocessableEntity, response{Message: "Date cannot be in the past"})
 		}
 		if err := svc.Repo.CreateBooking(c.Request().Context(), req.ClassID, req.MemberName, date.Unix()); err != nil {
-			if _, ok := err.(repo.RepoError); ok {
-				return c.JSON(http.StatusBadRequest, response{Message: err.Error()})
+			switch err {
+			case repo.ClassNotFoundError:
+				return c.JSON(http.StatusNotFound, response{Message: "Class not found"})
+			case repo.ClassFullError:
+				return c.JSON(http.StatusConflict, response{Message: "Class is full"})
+			case repo.InvalidDateRangeError:
+				return c.JSON(http.StatusUnprocessableEntity, response{Message: "No class is available on the given date"})
+			default:
+				slog.Error(err.Error())
+				return echo.ErrInternalServerError
 			}
-			slog.Error(err.Error())
-			return echo.ErrInternalServerError
 		}
 		return c.JSON(http.StatusCreated, response{Message: "Booking created successfully"})
 	}

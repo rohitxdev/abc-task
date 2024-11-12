@@ -3,15 +3,14 @@ package repo
 import (
 	"context"
 	"database/sql"
+	"errors"
 )
 
-type RepoError struct {
-	Message string
-}
-
-func (e RepoError) Error() string {
-	return e.Message
-}
+var (
+	ClassNotFoundError    = errors.New("Class not found")
+	ClassFullError        = errors.New("Class is full")
+	InvalidDateRangeError = errors.New("No class is available on the given date")
+)
 
 type Repo struct {
 	// Must be an active SQLite database
@@ -76,12 +75,12 @@ func (r *Repo) CreateBooking(ctx context.Context, classID uint64, memberName str
 	var capacity uint
 	if err = row.Scan(&startDate, &endDate, &capacity); err != nil {
 		if err == sql.ErrNoRows {
-			return RepoError{Message: "Class not found"}
+			return ClassNotFoundError
 		}
 		return err
 	}
 	if startDate > date || endDate < date {
-		return RepoError{Message: "No class is available on the given date"}
+		return InvalidDateRangeError
 	}
 
 	row = tx.QueryRowContext(ctx, "SELECT COUNT(*) FROM bookings WHERE class_id = ? AND date = ?;", classID, date)
@@ -92,7 +91,7 @@ func (r *Repo) CreateBooking(ctx context.Context, classID uint64, memberName str
 	}
 
 	if occupancy >= capacity {
-		return RepoError{Message: "Class is full"}
+		return ClassFullError
 	}
 	if _, err = tx.ExecContext(ctx, "INSERT INTO bookings (class_id, member_name, date) VALUES (?, ?, ?);", classID, memberName, date); err != nil {
 		return err
