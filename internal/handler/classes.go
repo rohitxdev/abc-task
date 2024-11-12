@@ -9,11 +9,10 @@ import (
 )
 
 type CreateClassRequest struct {
-	Name        string `json:"name" validate:"required"`
-	Description string `json:"description"`
-	StartDate   string `json:"startDate" validate:"required"`
-	EndDate     string `json:"endDate" validate:"required"`
-	Capacity    uint   `json:"capacity" validate:"required"`
+	Name      string `json:"name" validate:"required"`
+	StartDate string `json:"startDate" validate:"required"`
+	EndDate   string `json:"endDate" validate:"required"`
+	Capacity  uint   `json:"capacity" validate:"required"`
 }
 
 // @Summary Create a new class
@@ -21,13 +20,10 @@ type CreateClassRequest struct {
 // @Tags Classes
 // @Accept json
 // @Produce json
-// @Param name body string true "Name of the class"
-// @Param description body string false "Description of the class"
-// @Param startDate body string true "Start date of the class in the format YYYY-MM-DD"
-// @Param endDate body string true "End date of the class in the format YYYY-MM-DD"
-// @Param capacity body uint true "Capacity of the class"
-// @Success 200 {object} response
+// @Param body body handler.CreateClassRequest true "Request body"
+// @Success 201 {object} response
 // @Failure 400 {object} response
+// @Failure 422 {object} response
 // @Failure 500 {object} response
 // @Router /classes [post]
 func CreateClass(svc *Services) echo.HandlerFunc {

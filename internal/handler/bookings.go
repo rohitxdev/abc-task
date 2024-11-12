@@ -20,11 +20,12 @@ type CreateBookingRequest struct {
 // @Tags Bookings
 // @Accept json
 // @Produce json
-// @Param classId body uint true "ID of the class"
-// @Param memberName body string true "Name of the member"
-// @Param date body string true "Date of the booking in the format YYYY-MM-DD"
-// @Success 200 {object} response
+// @Param body body handler.CreateBookingRequest true "Request body"
+// @Success 201 {object} response
 // @Failure 400 {object} response
+// @Failure 404 {object} response
+// @Failure 409 {object} response
+// @Failure 422 {object} response
 // @Failure 500 {object} response
 // @Router /bookings [post]
 func CreateBooking(svc *Services) echo.HandlerFunc {

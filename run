@@ -98,6 +98,11 @@ watch() {
     local build_cmd="go build --ldflags=\"-X $PACKAGE_NAME/internal/config.AppName=$APP_NAME -X $PACKAGE_NAME/internal/config.AppVersion=$APP_VERSION -X $PACKAGE_NAME/internal/config.BuildType=debug\" --race -o $tmp_dir/main  ."
 
     print loading "Starting development server"
+
+    if ! command -v air &>/dev/null; then
+        print error "air is not installed. Please install it using 'go install github.com/air-verse/air@latest'"
+        return 1
+    fi
     # build.kill_delay is in nanoseconds
     air --tmp_dir="$tmp_dir" --build.cmd "$build_cmd" --build.bin "$tmp_dir/main" --build.delay 0 --build.kill_delay 10000000000 \
         --build.include_ext "go,tmpl" --build.send_interrupt true --log.main_only true
@@ -153,7 +158,7 @@ test() {
 
 test_cover() {
     print loading "Running tests and generating coverage report"
-    SECRETS_FILE=../../secrets.json go test --race --coverprofile=./tmp/coverage.out ./... && go tool cover --html=./tmp/coverage.out
+    SECRETS_FILE=../../secrets.json go test --race --coverprofile=./.tmp/coverage.out ./... && go tool cover --html=./.tmp/coverage.out
 }
 
 benchmark() {

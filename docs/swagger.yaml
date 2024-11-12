@@ -1,0 +1,116 @@
+definitions:
+  handler.CreateBookingRequest:
+    properties:
+      classId:
+        type: integer
+      date:
+        type: string
+      memberName:
+        type: string
+    required:
+    - classId
+    - date
+    - memberName
+    type: object
+  handler.CreateClassRequest:
+    properties:
+      capacity:
+        type: integer
+      endDate:
+        type: string
+      name:
+        type: string
+      startDate:
+        type: string
+    required:
+    - capacity
+    - endDate
+    - name
+    - startDate
+    type: object
+  handler.response:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /bookings:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new booking for the given class and member name.
+      parameters:
+      - description: Request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateBookingRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/handler.response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Create a new booking
+      tags:
+      - Bookings
+  /classes:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new class with the given name, description, start date,
+        end date, and capacity.
+      parameters:
+      - description: Request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateClassRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Create a new class
+      tags:
+      - Classes
+swagger: "2.0"

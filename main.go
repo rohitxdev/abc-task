@@ -1,3 +1,5 @@
+//go:generate go run github.com/swaggo/swag/cmd/swag@v1.8.12  init -q -g internal/handler/handler.go
+
 package main
 
 import (

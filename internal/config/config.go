@@ -9,11 +9,11 @@ import (
 )
 
 type Config struct {
-	Env             string `validate:"required,oneof=development production"`
-	Host            string `validate:"required,ip"`
-	Port            string `validate:"required,number"`
-	DatabaseURL     string `validate:"required,filepath"`
-	ShutdownTimeout time.Duration
+	Env             string        `validate:"required,oneof=development production"`
+	Host            string        `validate:"required,ip"`
+	Port            string        `validate:"required,number"`
+	DatabaseURL     string        `validate:"required,filepath"`
+	ShutdownTimeout time.Duration `validate:"required"`
 }
 
 func Load() (*Config, error) {
