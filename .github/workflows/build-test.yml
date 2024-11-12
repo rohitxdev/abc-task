@@ -28,9 +28,11 @@ jobs:
       - name: Run tests
         run: ./run test
         env:
-          SHUTDOWN_TIMEOUT: 20s
-          PORT: 8080
-          HOST: 0.0.0.0
           ENV: development
+          HOST: 0.0.0.0
+          PORT: 8080
+          DATABASE_URL: app.db
+          SHUTDOWN_TIMEOUT: 20s
+
 
       
