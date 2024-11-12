@@ -48,14 +48,6 @@ func MigrateUp(db *sql.DB) error {
 	return nil
 }
 
-type Class struct {
-	Name      string
-	Capacity  uint
-	StartDate int64
-	EndDate   int64
-	ID        int64
-}
-
 // 'startDate' and 'endDate' are in UNIX timestamp format
 func (r *Repo) CreateClass(name string, startDate int64, endDate int64, capacity uint) error {
 	query := "INSERT INTO classes (name, start_date, end_date, capacity) VALUES (?, ?, ?, ?);"
