@@ -1,0 +1,15 @@
+services:
+  api:
+    build:
+      context: .
+      target: development
+      args:
+        - BASE_IMAGE_TAG=${BASE_IMAGE_TAG}
+    volumes:
+      - .:/app
+    ports:
+      - ${PORT}:${PORT}
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
