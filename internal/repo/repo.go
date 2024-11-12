@@ -61,6 +61,8 @@ func (r *Repo) CreateBooking(ctx context.Context, classID uint64, memberName str
 	if err != nil {
 		return err
 	}
+	defer tx.Rollback()
+
 	row := tx.QueryRowContext(ctx, "SELECT start_date, end_date, capacity FROM classes WHERE id = ?;", classID)
 	var startDate int64
 	var endDate int64
@@ -87,5 +89,8 @@ func (r *Repo) CreateBooking(ctx context.Context, classID uint64, memberName str
 	if _, err = tx.ExecContext(ctx, "INSERT INTO bookings (class_id, member_name, date) VALUES (?, ?, ?);", classID, memberName, date); err != nil {
 		return err
 	}
-	return tx.Commit()
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }

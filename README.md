@@ -6,6 +6,7 @@ Backend task for ABC fitness solutions.
 
 ### Prerequisites
 
+- Linux or MacOS
 - Go 1.23+
 - Docker
 - Bash 5.2+
@@ -67,6 +68,10 @@ cd abc-task
 | `./run checkpoint` | Create a git checkpoint and push changes to origin |
 | `./run pprof` | Start pprof profile |
 | `./run upgrade` | Upgrade dependencies |
+
+## Troubeshooting
+
+- If './run xxx' gives 'not executable' error, run 'chmod +x ./run' to make it executable.
 
 ## Notes
 
