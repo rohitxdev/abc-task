@@ -52,7 +52,7 @@ func CreateClass(svc *Services) echo.HandlerFunc {
 		if startDate.After(endDate) {
 			return c.JSON(http.StatusUnprocessableEntity, response{Message: "End date cannot be before start date"})
 		}
-		if err := svc.Repo.CreateClass(req.Name, startDate.Unix(), endDate.Unix(), req.Capacity); err != nil {
+		if err := svc.Repo.CreateClass(c.Request().Context(), req.Name, startDate.Unix(), endDate.Unix(), req.Capacity); err != nil {
 			switch err {
 			default:
 				// Usually I add a lot more details to the log for internal server errors, but for this task, I'm just logging the error and returning a generic error message

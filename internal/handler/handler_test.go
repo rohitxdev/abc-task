@@ -130,7 +130,6 @@ func TestAPI(t *testing.T) {
 				err = handler.CreateClass(svc)(c)
 				assert.Nil(t, err)
 				assert.Equal(t, tt.want, res.Code)
-				t.Log(res.Code, res.Body.String())
 			})
 		}
 	})
@@ -220,7 +219,6 @@ func TestAPI(t *testing.T) {
 				err = handler.CreateBooking(svc)(c)
 				assert.Nil(t, err)
 				assert.Equal(t, tt.want, res.Code)
-				t.Log(res.Code, res.Body.String())
 			})
 		}
 	})

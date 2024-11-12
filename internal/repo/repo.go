@@ -49,9 +49,9 @@ func MigrateUp(db *sql.DB) error {
 }
 
 // 'startDate' and 'endDate' are in UNIX timestamp format
-func (r *Repo) CreateClass(name string, startDate int64, endDate int64, capacity uint) error {
+func (r *Repo) CreateClass(ctx context.Context, name string, startDate int64, endDate int64, capacity uint) error {
 	query := "INSERT INTO classes (name, start_date, end_date, capacity) VALUES (?, ?, ?, ?);"
-	_, err := r.db.ExecContext(context.Background(), query, name, startDate, endDate, capacity)
+	_, err := r.db.ExecContext(ctx, query, name, startDate, endDate, capacity)
 	return err
 }
 
@@ -77,8 +77,7 @@ func (r *Repo) CreateBooking(ctx context.Context, classID uint64, memberName str
 
 	row = tx.QueryRowContext(ctx, "SELECT COUNT(*) FROM bookings WHERE class_id = ? AND date = ?;", classID, date)
 	var occupancy uint
-	err = row.Scan(&occupancy)
-	if err != nil {
+	if err = row.Scan(&occupancy); err != nil {
 		return err
 	}
 
